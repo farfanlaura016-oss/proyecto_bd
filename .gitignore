@@ -1,0 +1,9 @@
+**/node_modules/
+
+**/.nev
+**/.env.local
+
+**/dist/
+**/build/
+
+.DS_Store
