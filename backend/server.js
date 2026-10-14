@@ -79,7 +79,66 @@ app.delete("/productos/:id", (req, res) => {
   });
 });
 
-// Iniciar servidor en el puerto 3000
+
+
+//n CONTACTOS
+
+
+// Crear mensaje
+app.post("/contacto", (req, res) => {
+  const { nombre, email, asunto, comentarios } = req.body;
+
+  if (!nombre?.trim() || !email?.trim() || !asunto?.trim() || !comentarios?.trim()) {
+    return res.status(400).json({ mensaje: "Completa todos los campos" });
+  }
+
+  const sql = "INSERT INTO contactos (nombre, email, asunto, comentarios) VALUES (?, ?, ?, ?)";
+
+  conexion.query(sql, [nombre, email, asunto, comentarios], (error, resultado) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ mensaje: "Error al enviar el mensaje" });
+    }
+
+    res.status(201).json({ mensaje: "Mensaje enviado correctamente", id: resultado.insertId });
+  });
+});
+
+// Consultar mensajes
+app.get("/contacto", (req, res) => {
+  const sql = "SELECT id, nombre, email, asunto, comentarios, fecha FROM contactos ORDER BY fecha DESC";
+
+  conexion.query(sql, (error, resultados) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ mensaje: "Error al consultar mensajes" });
+    }
+
+    res.json(resultados);
+  });
+});
+
+// Eliminarrr
+app.delete("/contacto/:id", (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id < 1) {
+    return res.status(400).json({ mensaje: "ID no válido" });
+  }
+
+  const sql = "DELETE FROM contactos WHERE id = ?";
+
+  conexion.query(sql, [id], (error, resultado) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ mensaje: "Error al eliminar el mensaje" });
+    }
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({ mensaje: "Mensaje no encontrado" });
+    }
+    res.json({ mensaje: "Mensaje eliminado correctamente" });
+  });
+});
+
 app.listen(3000, () => {
   console.log(" Servidor ejecutándose en http://localhost:3000");
 });

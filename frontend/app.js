@@ -10,6 +10,7 @@ const stockInput = document.getElementById("stock");
 const btnGuardar = document.getElementById("btnGuardar");
 const btnCancelar = document.getElementById("btnCancelar");
 const tituloFormulario = document.getElementById("tituloFormulario");
+// CONTACTO
 const formContacto = document.getElementById("formularioContacto");
 
 // 1. Función para consultar los productos y mostrarlos en el DOM (READ)
@@ -132,14 +133,96 @@ async function eliminarProducto(id) {
   }
 }
 
-// 5. Formulario de contacto (demostrativo en contacto.html)
+// Formulario de contactooo
 if (formContacto) {
-  formContacto.addEventListener("submit", (e) => {
+  formContacto.addEventListener("submit", async (e) => {
     e.preventDefault();
-    alert("¡Mensaje de contacto enviado con éxito!");
-    formContacto.reset();
+    const nombre = document.getElementById("nombreContacto").value.trim();
+    const email = document.getElementById("emailContacto").value.trim();
+    const asunto = document.getElementById("asuntoContacto").value.trim();
+    const comentarios = document.getElementById("comentariosContacto").value.trim();
+    try {
+      const respuesta = await fetch(`${API_URL}/contacto`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, email, asunto, comentarios })
+      });
+      const resultado = await respuesta.json();
+      if (!respuesta.ok) {
+        alert(resultado.mensaje || "No se pudo enviar el mensaje");
+        return;
+      }
+      alert("¡Mensaje enviado correctamente!");
+      formContacto.reset();
+      cargarMensajes();
+    } catch (error) {
+      console.error("Error al enviar el mensaje:", error);
+      alert("No se pudo conectar con el servidor");
+    }
   });
+}
+
+
+// Consultar y mostrar mensajes
+async function cargarMensajes() {
+  const listaMensajes = document.getElementById("listaMensajes");
+  if (!listaMensajes) return;
+  try {
+    const respuesta = await fetch(`${API_URL}/contacto`);
+    const mensajes = await respuesta.json();
+    if (!respuesta.ok) {
+      throw new Error("No se pudieron consultar los mensajes");
+    }
+    listaMensajes.innerHTML = "";
+    if (mensajes.length === 0) {
+      listaMensajes.textContent = "No hay mensajes recibidos.";
+      return;
+    }
+    mensajes.forEach((mensaje) => {
+      const elemento = document.createElement("div");
+      elemento.classList.add("producto");
+      const titulo = document.createElement("h3");
+      titulo.textContent = mensaje.asunto;
+      const nombre = document.createElement("p");
+      nombre.textContent = `Nombre: ${mensaje.nombre}`;
+      const email = document.createElement("p");
+      email.textContent = `Correo: ${mensaje.email}`;
+      const comentarios = document.createElement("p");
+      comentarios.textContent = `Mensaje: ${mensaje.comentarios}`;
+      const boton = document.createElement("button");
+      boton.textContent = "Eliminar mensaje";
+      boton.classList.add("btn-eliminar");
+      boton.addEventListener("click", () => eliminarMensaje(mensaje.id));
+      elemento.append(titulo, nombre, email, comentarios, boton);
+      listaMensajes.appendChild(elemento);
+    });
+  } catch (error) {
+    console.error("Error al cargar mensajes:", error);
+    listaMensajes.textContent = "Error al cargar los mensajes.";
+  }
+}
+
+
+// Eliminar un mensaje
+async function eliminarMensaje(id) {
+  if (!confirm("¿Deseas eliminar este mensaje?")) return;
+  try {
+    const respuesta = await fetch(`${API_URL}/contacto/${id}`, {
+      method: "DELETE"
+    });
+    const resultado = await respuesta.json();
+    if (!respuesta.ok) {
+      alert(resultado.mensaje || "No se pudo eliminar el mensaje");
+      return;
+    }
+    alert("Mensaje eliminado correctamente");
+    cargarMensajes();
+  } catch (error) {
+    console.error("Error al eliminar el mensaje:", error);
+    alert("No se pudo conectar con el servidor");
+  }
 }
 
 // Llamado inicial al cargar la página
 cargarProductos();
+cargarMensajes();

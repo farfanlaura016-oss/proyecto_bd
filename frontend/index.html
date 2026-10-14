@@ -1,89 +1,98 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi Tienda — Gestión de Productos</title>
-
-  <!-- Fuente moderna -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
-
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Tienda — Gestión de Productos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  <!-- ===== BARRA DE NAVEGACIÓN (NAVBAR) ===== -->
-  <header class="navbar">
-    <div class="contenedor nav-contenido">
-      <a href="index.html" class="logo"> Mi<strong>Tienda</strong></a>
-      <nav class="nav-links">
-        <a href="index.html">Inicio</a>
-        <a href="#productos">Productos</a>
-        <a href="contacto.html">Contacto</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- ===== CONTENIDO PRINCIPAL ===== -->
-  <main class="contenedor" id="inicio">
-    <div class="encabezado-principal">
-      <h1>Sistema de Gestión de Productos</h1>
-      <p>Panel de control conectado a MySQL y Express</p>
-    </div>
-
-    <div class="panel-tienda">
-      <!-- SECCIÓN 1: Formulario de Registro -->
-      <section class="tarjeta" id="registro">
-        <h2 id="tituloFormulario">Registrar Producto</h2>
-
-        <form id="formularioProducto">
-          <!-- Campo oculto para almacenar el ID en caso de edición -->
-          <input type="hidden" id="productoId" value="" />
-
-          <div class="campo">
-            <label for="nombre">Nombre del producto:</label>
-            <input type="text" id="nombre" placeholder="Ej: Camiseta básica" required />
-          </div>
-
-          <div class="campo">
-            <label for="precio">Precio ($):</label>
-            <input type="number" id="precio" step="0.01" placeholder="Ej: 25000" required />
-          </div>
-
-          <div class="campo">
-            <label for="stock">Stock (cantidad):</label>
-            <input type="number" id="stock" placeholder="Ej: 10" required />
-          </div>
-
-          <div class="acciones-form">
-            <button type="submit" id="btnGuardar" class="btn btn-guardar">Guardar Producto</button>
-            <button type="button" id="btnCancelar" class="btn btn-cancelar" style="display: none;">Cancelar</button>
-          </div>
-        </form>
-      </section>
-
-      <!-- SECCIÓN 2: Lista de Productos -->
-      <section class="tarjeta" id="productos">
-        <h2>Lista de Productos</h2>
-        <div id="listaProductos" class="lista-productos">
-          <!-- Los productos se cargan desde app.js -->
+    <header class="navbar">
+        <div class="contenedor nav-contenido">
+            <a href="#inicio" class="logo">Mi<strong>Tienda</strong></a>
+            <nav class="nav-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#productos">Productos</a>
+                <a href="#contacto">Contacto</a>
+                <a href="#mensajes">Mensajes</a>
+            </nav>
         </div>
-      </section>
-    </div>
-  </main>
-
-  <!-- ===== PIE DE PÁGINA (FOOTER) ===== -->
-  <footer class="footer">
-    <div class="contenedor footer-contenido">
-      <p>&copy; 2026 Mi Tienda — Proyecto Formativo con Node.js, Express y MySQL.</p>
-    </div>
-  </footer>
-
-  <script src="app.js"></script>
+    </header>
+    <main class="contenedor" id="inicio">
+        <div class="encabezado-principal">
+            <h1>Sistema de Gestión de Productos</h1>
+            <p>Panel de control conectado a MySQL y Express</p>
+        </div>
+        <div class="panel-tienda">
+            <section class="tarjeta" id="registro">
+                <h2 id="tituloFormulario">Registrar Producto</h2>
+                <form id="formularioProducto">
+                    <input type="hidden" id="productoId" value="">
+                    <div class="campo">
+                        <label for="nombre">Nombre del producto:</label>
+                        <input type="text" id="nombre" placeholder="Ej: Camiseta básica" required>
+                    </div>
+                    <div class="campo">
+                        <label for="precio">Precio ($):</label>
+                        <input type="number" id="precio" step="0.01" placeholder="Ej: 25000" required>
+                    </div>
+                    <div class="campo">
+                        <label for="stock">Stock (cantidad):</label>
+                        <input type="number" id="stock" placeholder="Ej: 10" required>
+                    </div>
+                    <div class="acciones-form">
+                        <button type="submit" id="btnGuardar" class="btn btn-guardar">
+                            Guardar Producto
+                        </button>
+                        <button type="button" id="btnCancelar" class="btn btn-cancelar" style="display: none;">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </section>
+            <section class="tarjeta" id="productos">
+                <h2>Lista de Productos</h2>
+                <div id="listaProductos" class="lista-productos"></div>
+            </section>
+        </div>
+        <section class="tarjeta" id="contacto">
+            <h2>Contáctanos</h2>
+            <p>Envíanos tus preguntas o comentarios.</p>
+            <form id="formularioContacto">
+                <div class="campo">
+                    <label for="nombreContacto">Nombre:</label>
+                    <input type="text" id="nombreContacto" name="nombre" placeholder="Escribe tu nombre" required>
+                </div>
+                <div class="campo">
+                    <label for="emailContacto">Correo electrónico:</label>
+                    <input type="email" id="emailContacto" name="email" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="campo">
+                    <label for="asuntoContacto">Asunto:</label>
+                    <input type="text" id="asuntoContacto" name="asunto" placeholder="Motivo del mensaje" required>
+                </div>
+                <div class="campo">
+                    <label for="comentariosContacto">Mensaje:</label>
+                    <textarea id="comentariosContacto" name="comentarios" placeholder="Escribe tu mensaje" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-guardar">
+                    Enviar mensaje
+                </button>
+            </form>
+        </section>
+        <section class="tarjeta" id="mensajes">
+            <h2>Mensajes recibidos</h2>
+            <div id="listaMensajes"></div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="contenedor footer-contenido">
+            <p>&copy; 2026 Mi Tienda — Proyecto Formativo con Node.js, Express y MySQL.</p>
+        </div>
+    </footer>
+    <script src="app.js"></script>
 </body>
-
 </html>
